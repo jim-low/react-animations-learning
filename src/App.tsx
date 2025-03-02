@@ -4,11 +4,18 @@ import { Tabs, Tab } from '@mui/material'
 import { PageTabs } from './types'
 import CustomTabPanel from './components/CustomTabPanel';
 import CanvasAnimation from './components/CanvasAnimation';
-import GsapAnimation from './components/GsapAnimation';
-import LottieFilesAnimation from './components/LottieFilesAnimation';
+
+const pageTabsMappings = {
+  [PageTabs.CANVAS_INTERACTIVE]: CanvasAnimation,
+  [PageTabs.CANVAS_ANALYTICS]: undefined,
+  [PageTabs.GSAP_INTERACTIVE]: undefined,
+  [PageTabs.GSAP_MOTIONS_POPUP]: undefined,
+  [PageTabs.GSAP_MOTIONS_PAGES]: undefined,
+  [PageTabs.LOTTIEFILES]: undefined,
+}
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_ANIMATION);
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_INTERACTIVE);
 
   return (
     <div>
@@ -17,28 +24,25 @@ function App() {
         onChange={(_, tab) => setSelectedTab(tab)}
         className='mb-2'
       >
-        <Tab value={PageTabs.CANVAS_ANIMATION} label="Canvas" />
-        <Tab value={PageTabs.GSAP_ANIMATION} label="GSAP" />
-        <Tab value={PageTabs.LOTTIEFILES_ANIMATION} label="LottieFiles" />
+        <Tab value={PageTabs.CANVAS_INTERACTIVE} label="Canvas Interactive" />
+        <Tab value={PageTabs.CANVAS_ANALYTICS} label="Canvas Analytics" />
+        <Tab value={PageTabs.GSAP_INTERACTIVE} label="GSAP Interactive" />
+        <Tab value={PageTabs.GSAP_MOTIONS_POPUP} label="GSAP Pop Up" />
+        <Tab value={PageTabs.GSAP_MOTIONS_PAGES} label="GSAP Pages" />
+        <Tab value={PageTabs.LOTTIEFILES} label="LottieFiles" />
       </Tabs>
 
-      <CustomTabPanel
-        value={PageTabs.CANVAS_ANIMATION}
-        index={selectedTab}
-        component={CanvasAnimation}
-      />
-
-      <CustomTabPanel
-        value={PageTabs.GSAP_ANIMATION}
-        index={selectedTab}
-        component={GsapAnimation}
-      />
-
-      <CustomTabPanel
-        value={PageTabs.LOTTIEFILES_ANIMATION}
-        index={selectedTab}
-        component={LottieFilesAnimation}
-      />
+      {
+        Object.keys(pageTabsMappings).map(key => {
+          return (
+            <CustomTabPanel
+              value={key as PageTabs}
+              index={selectedTab}
+              component={pageTabsMappings[key as PageTabs]}
+            />
+          );
+        })
+      }
     </div>
   )
 }

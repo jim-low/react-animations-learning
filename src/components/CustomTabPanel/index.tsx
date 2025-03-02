@@ -3,13 +3,13 @@ import { PageTabs } from '../../types';
 type CustomTabPanelProps = {
   value: PageTabs;
   index: PageTabs;
-  component: () => JSX.Element;
+  component?: () => JSX.Element;
 };
 
 const CustomTabPanel = (props: CustomTabPanelProps) => {
   const { value, index, component } = props;
 
-  if (value !== index) {
+  if (value !== index || !component) {
     return null;
   }
 
