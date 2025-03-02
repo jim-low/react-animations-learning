@@ -5,7 +5,7 @@ const CanvasAnimation = () => {
   const canvasRef = useRef(null);
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
-  const spawnTextsInterval = 5000;
+  const spawnTextsInterval = 3000;
 
   let floatingTexts: HopefulText[] = [];
   const spawnText = () => {
