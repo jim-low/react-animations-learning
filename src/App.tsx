@@ -3,10 +3,10 @@ import './App.css'
 import { Tabs, Tab } from '@mui/material'
 import { PageTabs } from './types'
 import CustomTabPanel from './components/CustomTabPanel';
-import CanvasAnimation from './components/CanvasAnimation';
+import CanvasInteractive from './components/CanvasInteractive';
 
 const pageTabsMappings = {
-  [PageTabs.CANVAS_INTERACTIVE]: CanvasAnimation,
+  [PageTabs.CANVAS_INTERACTIVE]: CanvasInteractive,
   [PageTabs.CANVAS_ANALYTICS]: undefined,
   [PageTabs.GSAP_INTERACTIVE]: undefined,
   [PageTabs.GSAP_MOTIONS_POPUP]: undefined,
