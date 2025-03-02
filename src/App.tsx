@@ -1,34 +1,45 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import { Tabs, Tab } from '@mui/material'
+import { PageTabs } from './types'
+import CustomTabPanel from './components/CustomTabPanel';
+import CanvasAnimation from './components/CanvasAnimation';
+import GsapAnimation from './components/GsapAnimation';
+import LottieFilesAnimation from './components/LottieFilesAnimation';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_ANIMATION);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <Tabs
+        value={selectedTab}
+        onChange={(_, tab) => setSelectedTab(tab)}
+        className='mb-2'
+      >
+        <Tab value={PageTabs.CANVAS_ANIMATION} label="Canvas" />
+        <Tab value={PageTabs.GSAP_ANIMATION} label="GSAP" />
+        <Tab value={PageTabs.LOTTIEFILES_ANIMATION} label="LottieFiles" />
+      </Tabs>
+
+      <CustomTabPanel
+        value={PageTabs.CANVAS_ANIMATION}
+        index={selectedTab}
+        component={CanvasAnimation}
+      />
+
+      <CustomTabPanel
+        value={PageTabs.GSAP_ANIMATION}
+        index={selectedTab}
+        component={GsapAnimation}
+      />
+
+      <CustomTabPanel
+        value={PageTabs.LOTTIEFILES_ANIMATION}
+        index={selectedTab}
+        component={LottieFilesAnimation}
+      />
+    </div>
   )
 }
 
