@@ -13,13 +13,16 @@ const CanvasAnimation = () => {
       return;
     }
 
-    const max = canvas.width - 350;
-    const min = 20;
+    const maxX = canvas.width - 350;
+    const minX = 20;
+
+    const maxY = canvas.height / 2;
+    const minY = 100;
     const floatingText = new HopefulText({
       ctx,
       pos: {
-        x: Math.random() * (max - min) + min,
-        y: Math.random() * canvas.height / 2,
+        x: Math.random() * (maxX - minX) + minX,
+        y: Math.random() * (maxY - minY) + minY,
       },
     });
 
