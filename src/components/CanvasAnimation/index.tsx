@@ -27,7 +27,6 @@ const CanvasAnimation = () => {
   }
 
   const floatingTextsController = () => {
-    console.log(floatingTexts);
     floatingTexts.forEach((textObject, index) => {
       textObject.update();
       textObject.render();
