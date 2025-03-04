@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react"
 import HopefulText from "./classes/HopefulText";
+import { Vector2D } from "../../types";
 
 const CanvasBasics = () => {
   const canvasRef = useRef(null);
@@ -7,38 +8,34 @@ const CanvasBasics = () => {
   let ctx: CanvasRenderingContext2D;
   const spawnTextsInterval = 3000;
 
-  let floatingTexts: HopefulText[] = [];
   const spawnText = () => {
-    if (!canvas && !ctx) {
+    if (!ctx) {
       return;
     }
 
-    const maxX = canvas.width - 350;
-    const minX = 20;
+    const max: Vector2D = { x: canvas.width - 350, y: canvas.height / 2 };
+    const min: Vector2D = { x: 20, y: 100 };
 
-    const maxY = canvas.height / 2;
-    const minY = 100;
     const floatingText = new HopefulText({
       ctx,
       pos: {
-        x: Math.random() * (maxX - minX) + minX,
-        y: Math.random() * (maxY - minY) + minY,
+        x: Math.random() * (max.x - min.x) + min.x,
+        y: Math.random() * (max.y - min.y) + min.y,
       },
     });
 
-    floatingTexts.push(floatingText);
+    HopefulText.floatingTexts.push(floatingText);
   }
 
-  const floatingTextsController = () => {
-    floatingTexts.forEach((textObject, index) => {
+  const floatingTextLoop = () => {
+    HopefulText.floatingTexts.forEach((textObject, index) => {
       textObject.update();
       textObject.render();
 
-      // remove object when fully disappeared
       if (textObject.shouldDelete()) {
-        floatingTexts = floatingTexts.filter((_, idx) => index !== idx);
+        HopefulText.floatingTexts = HopefulText.floatingTexts.filter((_, idx) => index !== idx)
       }
-    })
+    });
   }
 
   // "game" loop
@@ -54,7 +51,7 @@ const CanvasBasics = () => {
     let animateId: number = 0;
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      floatingTextsController();
+      floatingTextLoop();
       animateId = requestAnimationFrame(animate);
     };
 

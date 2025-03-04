@@ -13,6 +13,7 @@ class HopefulText {
     "If not now, when? If not me, who?",
     "老板亨亨 💪",
   ];
+  public static floatingTexts: HopefulText[] = [];
 
   private ctx: CanvasRenderingContext2D;
   private text: string;
