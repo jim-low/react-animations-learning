@@ -3,20 +3,16 @@ import './App.css'
 import { Tabs, Tab } from '@mui/material'
 import { PageTabs } from './types'
 import CustomTabPanel from './components/CustomTabPanel';
-import CanvasInteractive from './components/CanvasInteractive';
-import CanvasAnalytics from './components/CanvasAnalytics';
+import CanvasBasics from './components/CanvasBasics';
 
 const pageTabsMappings = {
-  [PageTabs.CANVAS_INTERACTIVE]: CanvasInteractive,
-  [PageTabs.CANVAS_ANALYTICS]: CanvasAnalytics,
-  [PageTabs.GSAP_INTERACTIVE]: undefined,
-  [PageTabs.GSAP_MOTIONS_POPUP]: undefined,
-  [PageTabs.GSAP_MOTIONS_PAGES]: undefined,
-  [PageTabs.LOTTIEFILES]: undefined,
+  [PageTabs.CANVAS_BASICS]: CanvasBasics,
+  [PageTabs.CANVAS_CHARTS_AND_GRAPH]: undefined,
+  [PageTabs.CANVAS_ANTV_REPLICATE]: undefined,
 }
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_ANALYTICS);
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_BASICS);
 
   return (
     <div>
@@ -25,12 +21,9 @@ function App() {
         onChange={(_, tab) => setSelectedTab(tab)}
         className='mb-2'
       >
-        <Tab value={PageTabs.CANVAS_INTERACTIVE} label="Canvas Interactive" />
-        <Tab value={PageTabs.CANVAS_ANALYTICS} label="Canvas Analytics" />
-        <Tab value={PageTabs.GSAP_INTERACTIVE} label="GSAP Interactive" />
-        <Tab value={PageTabs.GSAP_MOTIONS_POPUP} label="GSAP Pop Up" />
-        <Tab value={PageTabs.GSAP_MOTIONS_PAGES} label="GSAP Pages" />
-        <Tab value={PageTabs.LOTTIEFILES} label="LottieFiles" />
+        <Tab value={PageTabs.CANVAS_BASICS} label="Canvas Basics" />
+        <Tab value={PageTabs.CANVAS_CHARTS_AND_GRAPH} label="Canvas Charts and Graph" />
+        <Tab value={PageTabs.CANVAS_ANTV_REPLICATE} label="Canvas AntV Replicate" />
       </Tabs>
 
       {

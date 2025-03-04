@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import HopefulText from "./classes/HopefulText";
 
-const CanvasInteractive = () => {
+const CanvasBasics = () => {
   const canvasRef = useRef(null);
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D;
@@ -71,4 +71,4 @@ const CanvasInteractive = () => {
   )
 }
 
-export default CanvasInteractive
+export default CanvasBasics
