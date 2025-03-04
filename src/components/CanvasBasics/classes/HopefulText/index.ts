@@ -10,6 +10,8 @@ class HopefulText {
     "加薪奖励 🙏",
     "减少加班 🤝",
     "大马B+，活力加加 💪",
+    "If not now, when? If not me, who?",
+    "老板亨亨 💪",
   ];
 
   private ctx: CanvasRenderingContext2D;
