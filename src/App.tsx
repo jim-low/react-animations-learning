@@ -4,10 +4,11 @@ import { Tabs, Tab } from '@mui/material'
 import { PageTabs } from './types'
 import CustomTabPanel from './components/CustomTabPanel';
 import CanvasInteractive from './components/CanvasInteractive';
+import CanvasAnalytics from './components/CanvasAnalytics';
 
 const pageTabsMappings = {
   [PageTabs.CANVAS_INTERACTIVE]: CanvasInteractive,
-  [PageTabs.CANVAS_ANALYTICS]: undefined,
+  [PageTabs.CANVAS_ANALYTICS]: CanvasAnalytics,
   [PageTabs.GSAP_INTERACTIVE]: undefined,
   [PageTabs.GSAP_MOTIONS_POPUP]: undefined,
   [PageTabs.GSAP_MOTIONS_PAGES]: undefined,
@@ -15,7 +16,7 @@ const pageTabsMappings = {
 }
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_INTERACTIVE);
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_ANALYTICS);
 
   return (
     <div>
