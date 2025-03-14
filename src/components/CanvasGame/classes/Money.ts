@@ -8,13 +8,12 @@ type MoneyProps = {
 class Money extends GameObject {
   constructor(props: MoneyProps) {
     const { position } = props;
-    const size: number = 100;
 
     super({
       position,
       drawImageCentered: true,
       imagePath: './src/assets/money.png',
-      dim: { width: size, height: size }
+      dim: { width: 80, height: 60 }
     });
   }
 }

@@ -13,7 +13,7 @@ const pageTabsMappings = {
 }
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_BASIC_ANIMATION);
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_GAME);
 
   return (
     <div>

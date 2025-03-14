@@ -39,8 +39,6 @@ class Snek extends GameObject {
 
   update() {
     const distance = Math.sqrt(Math.pow(mouse.x - this.position.x, 2) + Math.pow(mouse.y - this.position.y, 2));
-    console.log(distance, mouse);
-
     if (distance <= Snek.SPEED_RADIUS) {
       this.slowDown();
     } else {

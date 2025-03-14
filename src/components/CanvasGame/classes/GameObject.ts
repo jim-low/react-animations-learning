@@ -1,5 +1,5 @@
 import { ctx as GameContext } from "..";
-import { Dimension2D, Vector2D } from "../types/common";
+import { Dimension2D, Object2D, Vector2D } from "../types/common";
 
 type GameObjectProps = {
   position?: Vector2D;
@@ -33,11 +33,35 @@ class GameObject {
     this.drawImageCentered = drawImageCentered || false;
   }
 
+  public getMeasurement(): Object2D {
+    return {
+      ...this.dim,
+      x: this.position.x - (this.dim.width / 2),
+      y: this.position.y - (this.dim.height / 2),
+    };
+  }
+
   public getPosition(): Vector2D {
     return this.position;
   }
 
   public update() {}
+
+  public drawHitbox() {
+    const calibrated: Vector2D = {
+      x: this.position.x - this.dim.width / 2,
+      y: this.position.y - this.dim.height / 2,
+    };
+
+    GameContext.beginPath();
+    GameContext.moveTo(calibrated.x, calibrated.y);
+    GameContext.lineTo(calibrated.x + this.dim.width, calibrated.y);
+    GameContext.lineTo(calibrated.x + this.dim.width, calibrated.y + this.dim.height);
+    GameContext.lineTo(calibrated.x, calibrated.y + this.dim.height);
+    GameContext.lineTo(calibrated.x, calibrated.y);
+    GameContext.stroke();
+    GameContext.closePath();
+  }
 
   public render() {
     if (!(this.image && this.isImageLoaded)) {

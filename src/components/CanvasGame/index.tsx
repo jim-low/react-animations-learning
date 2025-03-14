@@ -3,17 +3,19 @@ import Money from "./classes/Money";
 import AntOverTime from "./classes/AntOverTime";
 import ProjectProjectile from "./classes/ProjectProjectile";
 import { getRandomNumber, getRandomPosition } from "./utils";
-import { Boundary, Vector2D } from "./types/common";
+import { Boundary, Object2D, Vector2D } from "./types/common";
 import Snek from "./classes/Snek";
 
 export let canvas: HTMLCanvasElement;
 export let ctx: CanvasRenderingContext2D;
 
 // global mouse position
-export const mouse: Vector2D = { x: 0, y: 0, };
+export let mouse: Vector2D = { x: 0, y: 0, };
 
 const CanvasGame = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const moneyCollected = useRef<number>(0);
+  const hoursOvertime = useRef<number>(0);
 
   // settings
   const SHOOT_PROJECTILE_INTERVAL = 2000;
@@ -30,6 +32,28 @@ const CanvasGame = () => {
   const projectiles = useRef<ProjectProjectile[]>([]);
   const snek = useRef<Snek>();
 
+  const hasCollided = (collisionObject: Object2D, collisionTarget: Object2D): boolean => {
+    const isLeftCollided = collisionObject.x + collisionObject.width > collisionTarget.x;
+    const isRightCollided = collisionObject.x < collisionTarget.x + collisionTarget.width;
+    const isTopCollided = collisionObject.y + collisionObject.height > collisionTarget.y;
+    const isBottomCollided = collisionObject.y < collisionTarget.y + collisionTarget.height;
+
+    return isTopCollided && isRightCollided && isBottomCollided && isLeftCollided;
+  }
+
+  const resetPositions = () => {
+    overtimeButNoPay();
+    chaChing();
+  };
+
+  const collectMoney = () => {
+    moneyCollected.current += 1;
+  };
+
+  const kenaOT = () => {
+    hoursOvertime.current += 1;
+  };
+
   const shootProject = () => {
     const _project = new ProjectProjectile({
       position: getRandomPosition({
@@ -43,7 +67,7 @@ const CanvasGame = () => {
         },
       }),
       speed: getRandomNumber(5, 15),
-      target: money.current ? money.current.getPosition() : { x: 0, y: 0 }
+      target: snek.current ? snek.current.getPosition() : { x: 0, y: 0 }
     });
     projectiles.current.push(_project);
   }
@@ -72,8 +96,13 @@ const CanvasGame = () => {
 
     // set variables when canvas and context is mounted
     pickupBoundary = {
-      min: { x: pickupBoundaryMargin, y: pickupBoundaryMargin },
+      min: { x: pickupBoundaryMargin, y: pickupBoundaryMargin * 2 },
       max: { x: canvas.width - pickupBoundaryMargin, y: canvas.height - pickupBoundaryMargin },
+    };
+
+    mouse = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
     };
 
     const intervalId = setInterval(shootProject, SHOOT_PROJECTILE_INTERVAL);
@@ -103,11 +132,22 @@ const CanvasGame = () => {
       snek.current?.update();
       snek.current?.render();
 
+      if (hasCollided(money.current?.getMeasurement()!, snek.current?.getMeasurement()!)) {
+        collectMoney();
+        resetPositions();
+      }
+
+      if (hasCollided(antOvertime.current?.getMeasurement()!, snek.current?.getMeasurement()!)) {
+        kenaOT();
+        resetPositions();
+      }
+
       projectiles.current.forEach((item, index) => {
         item.update();
         item.render();
 
         if (item.isLifetimeFinished()) {
+          // remove projectile from existence
           projectiles.current = projectiles.current.filter((_, idx) => index !== idx);
         }
       })
