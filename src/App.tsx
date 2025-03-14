@@ -4,15 +4,17 @@ import { Tabs, Tab } from '@mui/material'
 import { PageTabs } from './types'
 import CustomTabPanel from './components/CustomTabPanel';
 import CanvasGame from './components/CanvasGame';
+import CanvasBasicAnimation from './components/CanvasBasicAnimation';
 
 const pageTabsMappings = {
+  [PageTabs.CANVAS_BASIC_ANIMATION]: CanvasBasicAnimation,
   [PageTabs.CANVAS_CHARTS_AND_GRAPH]: undefined,
   [PageTabs.CANVAS_GAME]: CanvasGame,
   [PageTabs.CANVAS_ANTV_REPLICATE]: undefined,
 }
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_GAME);
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_BASIC_ANIMATION);
 
   return (
     <div>
@@ -21,6 +23,7 @@ function App() {
         onChange={(_, tab) => setSelectedTab(tab)}
         className='mb-2'
       >
+        <Tab value={PageTabs.CANVAS_BASIC_ANIMATION} label="Basic Animation" />
         <Tab value={PageTabs.CANVAS_CHARTS_AND_GRAPH} label="Charts and Graph" />
         <Tab value={PageTabs.CANVAS_GAME} label="Game" />
         <Tab value={PageTabs.CANVAS_ANTV_REPLICATE} label="AntV Replicate" />
