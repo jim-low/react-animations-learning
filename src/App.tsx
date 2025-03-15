@@ -25,7 +25,7 @@ function App() {
       >
         <Tab value={PageTabs.CANVAS_BASIC_ANIMATION} label="Basic Animation" />
         <Tab value={PageTabs.CANVAS_GAME} label="Game" />
-        <Tab value={PageTabs.CANVAS_ANTV_REPLICATE} label="AntV Replicate" />
+        <Tab value={PageTabs.CANVAS_ANTV_REPLICATE} label="Simple AntV Replicate" />
       </Tabs>
 
       {
