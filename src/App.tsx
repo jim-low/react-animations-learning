@@ -14,7 +14,7 @@ const pageTabsMappings = {
 }
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_BAR_CHART);
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_BASIC_ANIMATION);
 
   return (
     <div>

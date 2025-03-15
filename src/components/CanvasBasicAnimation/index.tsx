@@ -91,6 +91,7 @@ const CanvasBasicAnimation = () => {
     animate();
 
     return () => {
+      clearInterval(spawnTrianglesId);
       cancelAnimationFrame(animationId);
     };
   }, []);
