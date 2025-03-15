@@ -6,7 +6,7 @@ export let canvas: HTMLCanvasElement;
 export let ctx: CanvasRenderingContext2D;
 export const mouse: Vector2D = { x: 0, y: 0 };
 
-const CanvasAntVReplicate = () => {
+const CanvasBarChart = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const barChart = useRef<BarChart>();
 
@@ -66,4 +66,4 @@ const CanvasAntVReplicate = () => {
   return <canvas ref={canvasRef} className="border-black border-2 border-solid" />;
 }
 
-export default CanvasAntVReplicate;
+export default CanvasBarChart;

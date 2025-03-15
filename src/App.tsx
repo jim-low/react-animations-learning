@@ -5,16 +5,16 @@ import { PageTabs } from './types'
 import CustomTabPanel from './components/CustomTabPanel';
 import CanvasGame from './components/CanvasGame';
 import CanvasBasicAnimation from './components/CanvasBasicAnimation';
-import CanvasAntVReplicate from './components/CanvasAntVReplicate';
+import CanvasBarChart from './components/CanvasBarChart';
 
 const pageTabsMappings = {
   [PageTabs.CANVAS_BASIC_ANIMATION]: CanvasBasicAnimation,
   [PageTabs.CANVAS_GAME]: CanvasGame,
-  [PageTabs.CANVAS_ANTV_REPLICATE]: CanvasAntVReplicate,
+  [PageTabs.CANVAS_BAR_CHART]: CanvasBarChart,
 }
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_ANTV_REPLICATE);
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_BAR_CHART);
 
   return (
     <div>
@@ -25,7 +25,7 @@ function App() {
       >
         <Tab value={PageTabs.CANVAS_BASIC_ANIMATION} label="Basic Animation" />
         <Tab value={PageTabs.CANVAS_GAME} label="Game" />
-        <Tab value={PageTabs.CANVAS_ANTV_REPLICATE} label="Simple AntV Replicate" />
+        <Tab value={PageTabs.CANVAS_BAR_CHART} label="Bar Chart" />
       </Tabs>
 
       {
