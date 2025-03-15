@@ -25,6 +25,13 @@ const CanvasGame = () => {
   const OVERTIME_SCORE = 4;
   const PROJECTS_SCORE = 1;
   const SHOOT_PROJECTILE_INTERVAL = 2000;
+
+  const END_GAME_SCORE = {
+    WIN_MONEY: MONEY_SCORE * 20,
+    LOSE_OVERTIME: OVERTIME_SCORE * 5,
+    LOSE_OVERWORK: PROJECTS_SCORE * 5,
+  };
+
   const pickupBoundaryMargin = 50;
   const projectileBoundaryMargin = 150;
   let pickupBoundary: Boundary = {
@@ -147,6 +154,30 @@ const CanvasGame = () => {
     projectiles.current = projectiles.current.filter((_, idx) => index !== idx);
   };
 
+  const winGame = () => {
+    ctx.fillStyle = '#90EE90';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '32px sans-serif';
+    ctx.fillStyle = 'black';
+    ctx.fillText('You have collected enough money!', canvas.width / 4, canvas.height / 2);
+    ctx.fillText('See you again next month!', canvas.width / 4, canvas.height / 2 + 50);
+  };
+
+  const loseGame = (type: 'OVERTIME' | 'OVERWORK') => {
+    ctx.fillStyle = '#FFCCCC';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '32px sans-serif';
+    ctx.fillStyle = 'black';
+
+    if (type === 'OVERTIME') {
+      ctx.fillText('You have spent 80 hours this week!', canvas.width / 4, canvas.height / 2);
+      ctx.fillText('Please be mindful of your health!', canvas.width / 4, canvas.height / 2 + 50);
+    } else {
+      ctx.fillText('You have taken on too much responsibility!', canvas.width / 4, canvas.height / 2);
+      ctx.fillText('Please work within your pay grade!', canvas.width / 4, canvas.height / 2 + 50);
+    }
+  };
+
   useEffect(() => {
     canvas = canvasRef.current!;
     ctx = canvas.getContext('2d')!;
@@ -235,7 +266,21 @@ const CanvasGame = () => {
         }
       });
 
-      animationId = requestAnimationFrame(gameLoop);
+      const enoughMoney = moneyCollected.current === END_GAME_SCORE.WIN_MONEY;
+      const tooMuchOvertime = hoursOvertime.current === END_GAME_SCORE.LOSE_OVERTIME;
+      const overWorked = projectsCollected.current === END_GAME_SCORE.LOSE_OVERWORK;
+      const isGameEnded = enoughMoney || tooMuchOvertime || overWorked;
+      if (!isGameEnded) {
+        animationId = requestAnimationFrame(gameLoop);
+      }
+
+      if (enoughMoney) {
+        winGame();
+      } else if (tooMuchOvertime) {
+        loseGame('OVERTIME');
+      } else if (overWorked) {
+        loseGame('OVERWORK');
+      }
     };
 
     gameLoop();
