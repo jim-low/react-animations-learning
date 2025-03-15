@@ -12,7 +12,7 @@ class Money extends GameObject {
     super({
       position,
       drawImageCentered: true,
-      imagePath: './src/assets/money.png',
+      imagePath: './assets/money.png',
       dim: { width: 80, height: 60 }
     });
   }

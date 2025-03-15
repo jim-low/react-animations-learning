@@ -13,7 +13,7 @@ class Snek extends GameObject {
   constructor() {
     super({
       position: { x: 100, y: 100 },
-      imagePath: './src/assets/ant-international-logo.png',
+      imagePath: './assets/ant-international-logo.png',
       drawImageCentered: true,
       dim: { width: 50, height: 50 }
     });

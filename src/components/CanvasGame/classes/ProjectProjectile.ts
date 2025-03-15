@@ -20,7 +20,7 @@ class ProjectProjectile extends GameObject {
 
     super({
       position,
-      imagePath: './src/assets/document.png',
+      imagePath: './assets/document.png',
       dim: { width: 60, height: 80 },
     });
 

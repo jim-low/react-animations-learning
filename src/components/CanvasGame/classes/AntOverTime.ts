@@ -13,7 +13,7 @@ class AntOverTime extends GameObject {
     super({
       position,
       drawImageCentered: true,
-      imagePath: './src/assets/ant-overtime.png',
+      imagePath: './assets/ant-overtime.png',
       dim: { width: size, height: size }
     });
   }
