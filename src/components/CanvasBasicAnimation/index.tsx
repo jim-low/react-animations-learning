@@ -106,9 +106,6 @@ const CanvasBasicAnimation = () => {
     return () => document.removeEventListener('mousemove', handleUpdateMousePosition);
   }, []);
 
-  useEffect(() => {
-  }, []);
-
   return (
     <canvas ref={canvasRef} className="border-black border-2 border-solid" />
   )
