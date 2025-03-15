@@ -6,7 +6,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path={'/'} element={<App />} />
+    <Route path={'/react-animations-learning'} element={<App />} />
   )
 );
 
