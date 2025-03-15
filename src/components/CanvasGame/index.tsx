@@ -6,6 +6,7 @@ import { getRandomNumber, getRandomPosition } from "./utils";
 import { Boundary, Object2D, Vector2D } from "./types/common";
 import Snek from "./classes/Snek";
 import Score from "./classes/Score";
+import FloatingText from "./classes/FloatingText";
 
 export let canvas: HTMLCanvasElement;
 export let ctx: CanvasRenderingContext2D;
@@ -36,13 +37,14 @@ const CanvasGame = () => {
   const antOvertime = useRef<AntOverTime>();
   const projectiles = useRef<ProjectProjectile[]>([]);
   const snek = useRef<Snek>();
+  const floatingTexts = useRef<FloatingText[]>([]);
 
   const moneyScoreParams = {
     position: {
       x: 10,
       y: 30,
     },
-    text: 'Salary Collected'
+    text: 'Salary Collected',
   };
   const moneyScore = useRef<Score>(new Score(moneyScoreParams));
 
@@ -51,7 +53,7 @@ const CanvasGame = () => {
       x: 10,
       y: 60,
     },
-    text: 'Hours Overtime'
+    text: 'Hours Overtime',
   };
   const overtimeScore = useRef<Score>(new Score(overtimeScoreParams));
 
@@ -60,7 +62,7 @@ const CanvasGame = () => {
       x: 10,
       y: 90,
     },
-    text: 'Projects Collected'
+    text: 'Projects Collected',
   };
   const accidentProjectsScore = useRef<Score>(new Score(accidentProjectsScoreParams));
 
@@ -78,19 +80,34 @@ const CanvasGame = () => {
     chaChing();
   };
 
-  const collectProject = () => {
+  const collectProject = (project: ProjectProjectile) => {
     projectsCollected.current += PROJECTS_SCORE;
     accidentProjectsScore.current.setScore(projectsCollected.current);
+
+    floatingTexts.current.push(new FloatingText({
+      position: project.getPosition()!,
+      type: 'PROJECT',
+    }));
   };
 
  const collectMoney = () => {
     moneyCollected.current += MONEY_SCORE;
     moneyScore.current.setScore(moneyCollected.current);
+
+    floatingTexts.current.push(new FloatingText({
+      position: money.current?.getPosition()!,
+      type: 'MONEY',
+    }));
   };
 
   const kenaOT = () => {
     hoursOvertime.current += OVERTIME_SCORE;
     overtimeScore.current.setScore(hoursOvertime.current);
+
+    floatingTexts.current.push(new FloatingText({
+      position: antOvertime.current?.getPosition()!,
+      type: 'OVERTIME',
+    }));
   };
 
   const shootProject = () => {
@@ -196,7 +213,7 @@ const CanvasGame = () => {
         item.render();
 
         if (hasCollided(item.getMeasurement()!, snek.current?.getMeasurement()!)) {
-          collectProject();
+          collectProject(item);
           resetPositions();
 
           // remove projectile from existence
@@ -207,7 +224,16 @@ const CanvasGame = () => {
           // remove projectile from existence
           removeProjectile(index);
         }
-      })
+      });
+
+      floatingTexts.current.forEach((text, index) => {
+        text.update();
+        text.render();
+
+        if (text.shouldRemove()) {
+          floatingTexts.current.filter((_, idx) => index !== idx);
+        }
+      });
 
       animationId = requestAnimationFrame(gameLoop);
     };

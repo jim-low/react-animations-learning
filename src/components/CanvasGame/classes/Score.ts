@@ -27,9 +27,12 @@ class Score extends GameObject {
     this.score = score;
   }
 
+  update() {}
+
   render() {
     const text = `${this.text}: ${this.score}`;
     GameContext.font = '20px sans-serif'
+    GameContext.fillStyle = 'black';
     GameContext.fillText(text, this.position.x, this.position.y);
   }
 }
