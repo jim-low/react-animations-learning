@@ -5,15 +5,16 @@ import { PageTabs } from './types'
 import CustomTabPanel from './components/CustomTabPanel';
 import CanvasGame from './components/CanvasGame';
 import CanvasBasicAnimation from './components/CanvasBasicAnimation';
+import CanvasAntVReplicate from './components/CanvasAntVReplicate';
 
 const pageTabsMappings = {
   [PageTabs.CANVAS_BASIC_ANIMATION]: CanvasBasicAnimation,
   [PageTabs.CANVAS_GAME]: CanvasGame,
-  [PageTabs.CANVAS_ANTV_REPLICATE]: undefined,
+  [PageTabs.CANVAS_ANTV_REPLICATE]: CanvasAntVReplicate,
 }
 
 function App() {
-  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_BASIC_ANIMATION);
+  const [selectedTab, setSelectedTab] = useState<PageTabs>(PageTabs.CANVAS_ANTV_REPLICATE);
 
   return (
     <div>
