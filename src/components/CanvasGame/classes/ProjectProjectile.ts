@@ -18,11 +18,10 @@ class ProjectProjectile extends GameObject {
   constructor(props: ProjectProjectileProps) {
     const { position, speed, target } = props;
 
-    const size = 100;
     super({
       position,
       imagePath: './src/assets/document.png',
-      dim: { width: size, height: size },
+      dim: { width: 60, height: 80 },
     });
 
     this.speed = speed;

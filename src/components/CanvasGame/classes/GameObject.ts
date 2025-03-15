@@ -34,6 +34,13 @@ class GameObject {
   }
 
   public getMeasurement(): Object2D {
+    if (!this.drawImageCentered) {
+      return {
+        ...this.dim,
+        ...this.position,
+      };
+    }
+
     return {
       ...this.dim,
       x: this.position.x - (this.dim.width / 2),
@@ -48,10 +55,12 @@ class GameObject {
   public update() {}
 
   public drawHitbox() {
-    const calibrated: Vector2D = {
-      x: this.position.x - this.dim.width / 2,
-      y: this.position.y - this.dim.height / 2,
-    };
+    const calibrated: Vector2D = this.drawImageCentered
+      ? {
+        x: this.position.x - this.dim.width / 2,
+        y: this.position.y - this.dim.height / 2,
+      }
+      : { ...this.position };
 
     GameContext.beginPath();
     GameContext.moveTo(calibrated.x, calibrated.y);

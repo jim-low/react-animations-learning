@@ -5,6 +5,7 @@ import ProjectProjectile from "./classes/ProjectProjectile";
 import { getRandomNumber, getRandomPosition } from "./utils";
 import { Boundary, Object2D, Vector2D } from "./types/common";
 import Snek from "./classes/Snek";
+import Score from "./classes/Score";
 
 export let canvas: HTMLCanvasElement;
 export let ctx: CanvasRenderingContext2D;
@@ -16,8 +17,12 @@ const CanvasGame = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const moneyCollected = useRef<number>(0);
   const hoursOvertime = useRef<number>(0);
+  const projectsCollected = useRef<number>(0);
 
   // settings
+  const MONEY_SCORE = 1;
+  const OVERTIME_SCORE = 4;
+  const PROJECTS_SCORE = 1;
   const SHOOT_PROJECTILE_INTERVAL = 2000;
   const pickupBoundaryMargin = 50;
   const projectileBoundaryMargin = 150;
@@ -31,6 +36,33 @@ const CanvasGame = () => {
   const antOvertime = useRef<AntOverTime>();
   const projectiles = useRef<ProjectProjectile[]>([]);
   const snek = useRef<Snek>();
+
+  const moneyScoreParams = {
+    position: {
+      x: 10,
+      y: 30,
+    },
+    text: 'Salary Collected'
+  };
+  const moneyScore = useRef<Score>(new Score(moneyScoreParams));
+
+  const overtimeScoreParams = {
+    position: {
+      x: 10,
+      y: 60,
+    },
+    text: 'Hours Overtime'
+  };
+  const overtimeScore = useRef<Score>(new Score(overtimeScoreParams));
+
+  const accidentProjectsScoreParams = {
+    position: {
+      x: 10,
+      y: 90,
+    },
+    text: 'Projects Collected'
+  };
+  const accidentProjectsScore = useRef<Score>(new Score(accidentProjectsScoreParams));
 
   const hasCollided = (collisionObject: Object2D, collisionTarget: Object2D): boolean => {
     const isLeftCollided = collisionObject.x + collisionObject.width > collisionTarget.x;
@@ -46,12 +78,19 @@ const CanvasGame = () => {
     chaChing();
   };
 
-  const collectMoney = () => {
-    moneyCollected.current += 1;
+  const collectProject = () => {
+    projectsCollected.current += PROJECTS_SCORE;
+    accidentProjectsScore.current.setScore(projectsCollected.current);
+  };
+
+ const collectMoney = () => {
+    moneyCollected.current += MONEY_SCORE;
+    moneyScore.current.setScore(moneyCollected.current);
   };
 
   const kenaOT = () => {
-    hoursOvertime.current += 1;
+    hoursOvertime.current += OVERTIME_SCORE;
+    overtimeScore.current.setScore(hoursOvertime.current);
   };
 
   const shootProject = () => {
@@ -86,6 +125,10 @@ const CanvasGame = () => {
     const _snek = new Snek();
     snek.current = _snek;
   }
+
+  const removeProjectile = (index: number) => {
+    projectiles.current = projectiles.current.filter((_, idx) => index !== idx);
+  };
 
   useEffect(() => {
     canvas = canvasRef.current!;
@@ -123,6 +166,12 @@ const CanvasGame = () => {
         spawnSnek();
       }
 
+      // score rendering
+      moneyScore.current?.render();
+      overtimeScore.current?.render();
+      accidentProjectsScore.current.render();
+
+      // game objects update and rendering
       money.current?.update();
       money.current?.render();
 
@@ -146,9 +195,17 @@ const CanvasGame = () => {
         item.update();
         item.render();
 
+        if (hasCollided(item.getMeasurement()!, snek.current?.getMeasurement()!)) {
+          collectProject();
+          resetPositions();
+
+          // remove projectile from existence
+          removeProjectile(index);
+        }
+
         if (item.isLifetimeFinished()) {
           // remove projectile from existence
-          projectiles.current = projectiles.current.filter((_, idx) => index !== idx);
+          removeProjectile(index);
         }
       })
 
