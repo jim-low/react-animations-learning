@@ -2,9 +2,9 @@ import { ctx } from "..";
 import { Vector2D } from "../types";
 
 type YAxisSettings = {
+  title: string;
   label: string;
   unit: string;
-  minValue: number;
   maxValue: number;
   steps: number;
   showUnit?: boolean;
@@ -27,6 +27,9 @@ class BarChart {
   private static CHART_MINIMUM: Vector2D = { x: 200, y: 100 };
   private static CHART_MAXIMUM: Vector2D = { x: 1400, y: 800 };
 
+  private static CHART_TITLE_FONT = '32px sans-serif';
+  private static CHART_TITLE_COLOR = 'black';
+
   private static CHART_BOUNDARY_COLOR = 'black';
   private static CHART_BOUNDARY_WIDTH = 3;
 
@@ -42,6 +45,8 @@ class BarChart {
   private static CHART_BARS_SPACING = 20;
   private static CHART_BARS_BORDER_WIDTH = 2;
   private static CHART_BARS_BORDER_COLOR = 'black';
+  private static CHART_X_AXIS_LABEL_FONT = '16px sans-serif';
+  private static CHART_X_AXIS_LABEL_COLOR = 'black';
 
   private yAxis: YAxisSettings;
   private bars: BarsSettings[];
@@ -53,6 +58,13 @@ class BarChart {
       showUnit:  yAxis.showUnit || true,
     };
     this.bars = bars;
+  }
+
+  private drawTitle() {
+    ctx.textAlign = 'center';
+    ctx.font = BarChart.CHART_TITLE_FONT;
+    ctx.fillStyle = BarChart.CHART_TITLE_COLOR;
+    ctx.fillText(this.yAxis.title, 700, 50);
   }
 
   private drawChartBoundaries() {
@@ -72,8 +84,8 @@ class BarChart {
     ctx.strokeStyle = BarChart.CHART_STEPS_COLOR;
     ctx.lineWidth = BarChart.CHART_STEPS_WIDTH;
 
-    const { minValue, maxValue, steps, unit } = this.yAxis;
-    const totalSteps = maxValue - minValue + 1;
+    const { maxValue, steps, unit } = this.yAxis;
+    const totalSteps = maxValue;
     const amountOfLines = totalSteps / steps;
     const spacingBetweenLines = (BarChart.CHART_MAXIMUM.y - BarChart.CHART_MINIMUM.y) / amountOfLines;
 
@@ -110,12 +122,12 @@ class BarChart {
   }
 
   private drawBars() {
-    const { minValue, maxValue, steps, bordered = true } = this.yAxis;
-    const totalSteps = maxValue - minValue + 1;
+    const { maxValue, steps, bordered = true } = this.yAxis;
+    const totalSteps = maxValue;
     const amountOfLines = totalSteps / steps;
     const spacingBetweenLines = (BarChart.CHART_MAXIMUM.y - BarChart.CHART_MINIMUM.y) / amountOfLines;
     const heightPerValue = spacingBetweenLines / steps;
-    const barWidth = (BarChart.CHART_MAXIMUM.x - BarChart.CHART_MINIMUM.x) / this.bars.length - (BarChart.CHART_BARS_SPACING * this.bars.length);
+    const width = ((BarChart.CHART_MAXIMUM.x - BarChart.CHART_MINIMUM.x - (BarChart.CHART_BARS_SPACING * this.bars.length)) / this.bars.length);
 
     this.bars.forEach((bar, index) => {
       const { label, value, color = BarChart.CHART_BARS_DEFAULT_COLOR, visible = true } = bar;
@@ -124,12 +136,12 @@ class BarChart {
 
       const height = (value * heightPerValue);
       const startEdge: Vector2D = {
-        x: BarChart.CHART_MINIMUM.x + BarChart.CHART_BARS_SPACING + (BarChart.CHART_BARS_SPACING * index) + (barWidth * index),
+        x: BarChart.CHART_MINIMUM.x + BarChart.CHART_BARS_SPACING + (BarChart.CHART_BARS_SPACING * index) + (width * index),
         y: BarChart.CHART_MAXIMUM.y - height,
       };
 
       ctx.beginPath();
-      ctx.fillRect(startEdge.x, startEdge.y, barWidth, value * heightPerValue);
+      ctx.fillRect(startEdge.x, startEdge.y, width, height);
 
       if (bordered) {
         ctx.setLineDash(!visible ? BarChart.CHART_STEPS_DASHED_SEGMENTS : []);
@@ -137,16 +149,26 @@ class BarChart {
         ctx.strokeStyle = BarChart.CHART_BARS_BORDER_COLOR;
         ctx.moveTo(startEdge.x, startEdge.y + height);
         ctx.lineTo(startEdge.x, startEdge.y);
-        ctx.lineTo(startEdge.x + barWidth, startEdge.y);
-        ctx.lineTo(startEdge.x + barWidth, startEdge.y + height);
+        ctx.lineTo(startEdge.x + width, startEdge.y);
+        ctx.lineTo(startEdge.x + width, startEdge.y + height);
         ctx.stroke();
       }
 
       ctx.closePath();
+
+      ctx.save();
+      ctx.font = BarChart.CHART_X_AXIS_LABEL_FONT;
+      ctx.fillStyle = BarChart.CHART_X_AXIS_LABEL_COLOR;
+      ctx.translate(startEdge.x + (width / 2) + 20, BarChart.CHART_MAXIMUM.y + 20);
+      ctx.rotate(-Math.PI / 6);
+      ctx.textAlign = 'right';
+      ctx.fillText(label, 0, 0);
+      ctx.restore();
     });
   }
 
   render() {
+    this.drawTitle();
     this.drawChartBoundaries();
     this.drawStepLines();
     this.drawYAxisSubject();

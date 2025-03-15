@@ -19,31 +19,22 @@ const CanvasAntVReplicate = () => {
 
     barChart.current = new BarChart({
       yAxis: {
-        label: 'Time Spent (years) in Ant Group',
-        unit: 'Years',
+        title: 'What I Have Gained from Ant Group',
+        label: 'Percentage',
+        unit: '%',
         showUnit: false,
-        steps: 2,
-        maxValue: 10,
-        minValue: 1,
+        steps: 10,
+        maxValue: 100,
         bordered: true,
       },
       bars: [
-        {
-          color: 'blue',
-          value: 2,
-          label: 'Money',
-          visible: false,
-        },
-        {
-          color: 'red',
-          value: 6,
-          label: 'Learning Mandarin',
-        },
-        {
-          color: 'pink',
-          value: 9,
-          label: 'Stress',
-        },
+        { color: '#3498DB  ', value: 10, label: 'Money', visible: false, },
+        { color: '#F39C12  ', value: 30, label: 'Technical Skills', },
+        { color: '#2ECC71  ', value: 80, label: 'Learning Mandarin', },
+        { color: '#34495E', value: 100, label: 'Hearing my Chinese Name', },
+        { color: '#9B59B6  ', value: 20, label: 'Collecting Ant Dolls', },
+        { color: '#1ABC9C  ', value: 90, label: 'Fruits', },
+        { color: '#E74C3C  ', value: 420, label: 'Stress', },
       ]
     });
 
